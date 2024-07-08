@@ -76,3 +76,4 @@ C:\Testplace\CodePulse\API\CodePulse.API\CodePulse.API\obj\Debug\net7.0\CodePuls
 C:\Testplace\CodePulse\API\CodePulse.API\CodePulse.API\obj\Debug\net7.0\ref\CodePulse.API.dll
 C:\Testplace\CodePulse\API\CodePulse.API\CodePulse.API\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Testplace\CodePulse\API\CodePulse.API\CodePulse.API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Testplace\CodePulse\API\CodePulse.API\CodePulse.API\obj\Debug\net7.0\CodePulse.API.sourcelink.json

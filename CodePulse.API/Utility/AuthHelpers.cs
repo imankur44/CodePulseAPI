@@ -1,4 +1,6 @@
 ﻿using CodePulse.API.Models.Domain;
+using CodePulse.API.Models.DTO;
+using CodePulse.API.Repositories.Interface;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,32 +11,31 @@ namespace CodePulse.API.Utility
     public class AuthHelpers
     {
         private IConfiguration _configuration;
+        private readonly IUserRepository userRepository;
 
-        public AuthHelpers(IConfiguration configuration)
+        public AuthHelpers(IConfiguration configuration, IUserRepository userRepository)
         {
             _configuration = configuration;
+            this.userRepository = userRepository;
         }
 
-        public User AuthenticateUser(User login)
+        public async Task<UserDto?> AuthenticateUser(User login)
         {
-            User user = null;
+            var user = await userRepository.GetUserAsync(login);
 
-            //Validate the user credentials
-            if (login.username.ToLower() == "ankur")
+            if (user == null)
+                return null;
+
+            return new UserDto
             {
-                user = new User
-                {
-                    id = login.id,
-                    username = login.username,
-                    email = login.email,
-                    dateOfJoining = login.dateOfJoining
-                };
-            }
-
-            return user;
+                id = login.id,
+                username = login.username,
+                email = login.email,
+                dateOfJoining = login.dateOfJoining
+            };
         }
 
-        public string GenerateJWTToken(User user)
+        public string GenerateJWTToken(UserDto user)
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),

@@ -14,27 +14,28 @@ namespace CodePulse.API.Controllers
     public class LoginController : ControllerBase
     {
         private  IConfiguration _configuration;
+        private readonly IUserRepository userRepository;
 
-        public LoginController(IConfiguration configuration)
+        public LoginController(IConfiguration configuration, IUserRepository userRepository)
         {
             _configuration = configuration;
+            this.userRepository = userRepository;
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] User login)
         {
-            IActionResult response = Unauthorized();
-            AuthHelpers authHelpers = new AuthHelpers(_configuration);
-            var user = authHelpers.AuthenticateUser(login);
+            AuthHelpers authHelpers = new AuthHelpers(_configuration, userRepository);
+            UserDto? userDto = await authHelpers.AuthenticateUser(login);
 
-            if (user != null)
+            if (userDto == null)
             {
-                var tokenString = authHelpers.GenerateJWTToken(user);
-                response = Ok(new { tokenString });
+                return Unauthorized(new { message = "Invalid credentials" });
             }
 
-            return Ok(response);
+            var tokenString = authHelpers.GenerateJWTToken(userDto);
+            return Ok(new { tokenString });
         }
     }
 }

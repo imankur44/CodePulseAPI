@@ -35,7 +35,7 @@ namespace CodePulse.API.Repositories.Implementation
             return await dbContext.BlogPosts.ToListAsync();
         }
 
-        public async Task<BlogPost> GetByIdAsync(Guid id)
+        public async Task<BlogPost?> GetByIdAsync(Guid id)
         {
             return await dbContext.BlogPosts.FindAsync(id);
         }
